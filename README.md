@@ -36,7 +36,7 @@ dotnet run --project src/TimeTracker.App
 dotnet publish src/TimeTracker.App -c Release -r win-x64 --self-contained -p:PublishSingleFile=true -o publish
 ```
 
-Результат: `publish\TimeTracker.exe` (~160 МБ, не требует установленного .NET)
+Результат: `publish\TimeTracker.exe` (~191 МБ, не требует установленного .NET)
 
 ## Структура
 
