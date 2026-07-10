@@ -1,0 +1,59 @@
+# ---------- .NET / Visual Studio ----------
+## Build results
+[Bb]in/
+[Oo]bj/
+[Oo]ut/
+publish/
+
+## Visual Studio
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.userprefs
+
+## NuGet
+*.nupkg
+*.snupkg
+**/[Pp]ackages/*
+!**/[Pp]ackages/build/
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+## Build logs & temp
+*.log
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Aa]pp[Uu]blish/
+*.publishproj
+*.publishsettings
+PublishScripts/
+
+## EF Core
+# Keep migrations source, ignore DB files
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+
+## Local runtime data
+[Bb]ackups/
+*.bak
+
+## OS files
+Thumbs.db
+desktop.ini
+ehthumbs.db
+$RECYCLE.BIN/
+.DS_Store
+
+## IDE: Rider / VSCode
+.idea/
+*.sln.DotSettings.user
+.vscode/
