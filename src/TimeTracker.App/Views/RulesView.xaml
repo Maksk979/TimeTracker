@@ -18,7 +18,7 @@
             </Grid.ColumnDefinitions>
             <TextBlock Grid.Column="0" Text="Правила и категории" Style="{StaticResource H1Text}" VerticalAlignment="Center"/>
             <StackPanel Grid.Column="1" Orientation="Horizontal">
-                <Button Content="Обновить" Style="{StaticResource SecondaryButton}" Margin="0,0,8,0"
+                <Button Content="↻ Обновить" Style="{StaticResource PrimaryButton}" Margin="0,0,8,0"
                         Command="{Binding LoadCommand}"/>
                 <Button Content="Сохранить" Style="{StaticResource PrimaryButton}"
                         Command="{Binding SaveCommand}"/>
@@ -71,13 +71,44 @@
                     <TextBlock Grid.Row="0" Text="ПРАВИЛА" Style="{StaticResource CaptionText}" Margin="0,0,0,8"/>
                     <DataGrid Grid.Row="1"
                               ItemsSource="{Binding Rules}"
-                              AutoGenerateColumns="False">
+                              AutoGenerateColumns="False"
+                              IsReadOnly="False">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="ПОЛЕ" Binding="{Binding FieldType}" Width="100"/>
-                            <DataGridTextColumn Header="ТИП" Binding="{Binding MatchType}" Width="100"/>
-                            <DataGridTextColumn Header="ШАБЛОН" Binding="{Binding Pattern}" Width="*"/>
-                            <DataGridTextColumn Header="ПРИОР." Binding="{Binding Priority}" Width="70"/>
-                            <DataGridCheckBoxColumn Header="ВКЛ" Binding="{Binding IsEnabled}" Width="50" IsReadOnly="True"/>
+                            <DataGridComboBoxColumn Header="ПОЛЕ" Width="100"
+                                                    SelectedItemBinding="{Binding FieldType}">
+                                <DataGridComboBoxColumn.ElementStyle>
+                                    <Style TargetType="ComboBox">
+                                        <Setter Property="ItemsSource">
+                                            <Setter.Value>
+                                                <x:Array Type="{x:Type system:String}" xmlns:system="clr-namespace:System;assembly=mscorlib">
+                                                    <system:String>ProcessName</system:String>
+                                                    <system:String>WindowTitle</system:String>
+                                                    <system:String>ExecutableName</system:String>
+                                                </x:Array>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </DataGridComboBoxColumn.ElementStyle>
+                            </DataGridComboBoxColumn>
+                            <DataGridComboBoxColumn Header="ТИП" Width="100"
+                                                    SelectedItemBinding="{Binding MatchType}">
+                                <DataGridComboBoxColumn.ElementStyle>
+                                    <Style TargetType="ComboBox">
+                                        <Setter Property="ItemsSource">
+                                            <Setter.Value>
+                                                <x:Array Type="{x:Type system:String}" xmlns:system="clr-namespace:System;assembly=mscorlib">
+                                                    <system:String>Substring</system:String>
+                                                    <system:String>Regex</system:String>
+                                                    <system:String>Exact</system:String>
+                                                </x:Array>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </DataGridComboBoxColumn.ElementStyle>
+                            </DataGridComboBoxColumn>
+                            <DataGridTextColumn Header="ШАБЛОН" Binding="{Binding Pattern, UpdateSourceTrigger=LostFocus}" Width="*"/>
+                            <DataGridTextColumn Header="ПРИОР." Binding="{Binding Priority, UpdateSourceTrigger=LostFocus}" Width="70"/>
+                            <DataGridCheckBoxColumn Header="ВКЛ" Binding="{Binding IsEnabled}" Width="50"/>
                         </DataGrid.Columns>
                     </DataGrid>
                     <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,12,0,0">

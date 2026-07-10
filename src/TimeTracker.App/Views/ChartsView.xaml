@@ -18,7 +18,7 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <TextBlock Grid.Column="0" Text="Графики за сегодня" Style="{StaticResource H1Text}" VerticalAlignment="Center"/>
-            <Button Grid.Column="1" Content="Обновить" Style="{StaticResource SecondaryButton}"
+            <Button Grid.Column="1" Content="↻ Обновить" Style="{StaticResource PrimaryButton}"
                     Command="{Binding LoadCommand}" VerticalAlignment="Center"/>
         </Grid>
 
