@@ -10,6 +10,7 @@ namespace TimeTracker.Core.Tracking.Win32;
 internal static class User32Native
 {
     private const string User32 = "user32.dll";
+    private const string Kernel32 = "kernel32.dll";
 
     /// <summary>Дескриптор активного (foreground) окна.</summary>
     [DllImport(User32, SetLastError = true)]
@@ -35,7 +36,7 @@ internal static class User32Native
     /// Число миллисекунд с момента старта системы. Используется вместе с
     /// GetLastInputInfo для расчёта времени бездействия пользователя.
     /// </summary>
-    [DllImport(User32)]
+    [DllImport(Kernel32)]
     internal static extern uint GetTickCount();
 
     /// <summary>
