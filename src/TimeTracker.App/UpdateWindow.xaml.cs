@@ -31,7 +31,7 @@ public partial class UpdateViewModel : ObservableObject
         _log = log;
 
         ReleaseName = release.Name;
-        VersionInfo = $"Текущая: {_updateService.CurrentVersion} → Новая: {release.TagName}";
+        VersionInfo = $"Текущая: {_updateService.DisplayVersion} → Новая: {release.TagName}";
         ReleaseNotes = release.Body?.Length > 300 ? release.Body[..300] + "..." : release.Body ?? "";
     }
 
