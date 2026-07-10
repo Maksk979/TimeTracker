@@ -162,6 +162,12 @@ public partial class RulesViewModel : ObservableObject
     }
 
     [RelayCommand]
+    private async Task DeleteSelectedRuleAsync(CategoryRule? rule)
+    {
+        await DeleteRuleAsync(rule);
+    }
+
+    [RelayCommand]
     private async Task SaveAsync()
     {
         try

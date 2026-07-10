@@ -3,9 +3,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:entities="clr-namespace:TimeTracker.Core.Storage.Entities;assembly=TimeTracker.Core"
              mc:Ignorable="d"
              d:DesignHeight="500" d:DesignWidth="860">
-    <Grid Margin="20">
+    <UserControl.Resources>
+        <ObjectDataProvider x:Key="FieldTypes" MethodName="GetValues" ObjectType="{x:Type entities:RuleFieldType}"/>
+        <ObjectDataProvider x:Key="MatchTypes" MethodName="GetValues" ObjectType="{x:Type entities:RuleMatchType}"/>
+    </UserControl.Resources>
+    <Grid Margin="24">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -27,7 +32,7 @@
 
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="220"/>
+                <ColumnDefinition Width="240"/>
                 <ColumnDefinition Width="1"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
@@ -70,50 +75,29 @@
                     </Grid.RowDefinitions>
                     <TextBlock Grid.Row="0" Text="ПРАВИЛА" Style="{StaticResource CaptionText}" Margin="0,0,0,8"/>
                     <DataGrid Grid.Row="1"
+                              x:Name="RulesDataGrid"
                               ItemsSource="{Binding Rules}"
                               AutoGenerateColumns="False"
-                              IsReadOnly="False">
+                              IsReadOnly="False"
+                              SelectionMode="Single">
                         <DataGrid.Columns>
-                            <DataGridComboBoxColumn Header="ПОЛЕ" Width="100"
-                                                    SelectedItemBinding="{Binding FieldType}">
-                                <DataGridComboBoxColumn.ElementStyle>
-                                    <Style TargetType="ComboBox">
-                                        <Setter Property="ItemsSource">
-                                            <Setter.Value>
-                                                <x:Array Type="{x:Type system:String}" xmlns:system="clr-namespace:System;assembly=mscorlib">
-                                                    <system:String>ProcessName</system:String>
-                                                    <system:String>WindowTitle</system:String>
-                                                    <system:String>ExecutableName</system:String>
-                                                </x:Array>
-                                            </Setter.Value>
-                                        </Setter>
-                                    </Style>
-                                </DataGridComboBoxColumn.ElementStyle>
-                            </DataGridComboBoxColumn>
-                            <DataGridComboBoxColumn Header="ТИП" Width="100"
-                                                    SelectedItemBinding="{Binding MatchType}">
-                                <DataGridComboBoxColumn.ElementStyle>
-                                    <Style TargetType="ComboBox">
-                                        <Setter Property="ItemsSource">
-                                            <Setter.Value>
-                                                <x:Array Type="{x:Type system:String}" xmlns:system="clr-namespace:System;assembly=mscorlib">
-                                                    <system:String>Substring</system:String>
-                                                    <system:String>Regex</system:String>
-                                                    <system:String>Exact</system:String>
-                                                </x:Array>
-                                            </Setter.Value>
-                                        </Setter>
-                                    </Style>
-                                </DataGridComboBoxColumn.ElementStyle>
-                            </DataGridComboBoxColumn>
+                            <DataGridComboBoxColumn Header="ПОЛЕ" Width="120"
+                                                    SelectedItemBinding="{Binding FieldType}"
+                                                    ItemsSource="{Binding Source={StaticResource FieldTypes}}"/>
+                            <DataGridComboBoxColumn Header="ТИП" Width="120"
+                                                    SelectedItemBinding="{Binding MatchType}"
+                                                    ItemsSource="{Binding Source={StaticResource MatchTypes}}"/>
                             <DataGridTextColumn Header="ШАБЛОН" Binding="{Binding Pattern, UpdateSourceTrigger=LostFocus}" Width="*"/>
                             <DataGridTextColumn Header="ПРИОР." Binding="{Binding Priority, UpdateSourceTrigger=LostFocus}" Width="70"/>
                             <DataGridCheckBoxColumn Header="ВКЛ" Binding="{Binding IsEnabled}" Width="50"/>
                         </DataGrid.Columns>
                     </DataGrid>
                     <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,12,0,0">
-                        <Button Content="+ Правило" Style="{StaticResource SecondaryButton}"
+                        <Button Content="+ Правило" Style="{StaticResource SecondaryButton}" Margin="0,0,8,0"
                                 Command="{Binding AddRuleCommand}"/>
+                        <Button Content="− Удалить правило" Style="{StaticResource SecondaryButton}"
+                                Command="{Binding DeleteSelectedRuleCommand}"
+                                CommandParameter="{Binding ElementName=RulesDataGrid, Path=SelectedItem}"/>
                     </StackPanel>
                 </Grid>
             </Border>

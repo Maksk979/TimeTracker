@@ -35,42 +35,27 @@
             </Grid.ColumnDefinitions>
 
             <Border Grid.Column="0" Style="{StaticResource CardBorder}" Margin="0">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="8"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-                    <TextBlock Grid.Row="0" Text="Активное время" Style="{StaticResource CaptionText}"/>
-                    <Border Grid.Row="2" Background="{StaticResource GoodBrush}" CornerRadius="2" Height="3" HorizontalAlignment="Left" Width="40"/>
-                    <TextBlock Grid.Row="2" Text="{Binding ActiveTime}" Style="{StaticResource MetricValue}" Margin="0,8,0,0"/>
-                </Grid>
+                <StackPanel>
+                    <TextBlock Text="Активное время" Style="{StaticResource CaptionText}" Margin="0,0,0,8"/>
+                    <Border Background="{StaticResource GoodBrush}" CornerRadius="2" Height="3" Margin="0,0,0,10"/>
+                    <TextBlock Text="{Binding ActiveTime}" Style="{StaticResource MetricValue}"/>
+                </StackPanel>
             </Border>
 
             <Border Grid.Column="2" Style="{StaticResource CardBorder}" Margin="0">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="8"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-                    <TextBlock Grid.Row="0" Text="Простой" Style="{StaticResource CaptionText}"/>
-                    <Border Grid.Row="2" Background="{StaticResource WarnBrush}" CornerRadius="2" Height="3" HorizontalAlignment="Left" Width="40"/>
-                    <TextBlock Grid.Row="2" Text="{Binding IdleTime}" Style="{StaticResource MetricValue}" Margin="0,8,0,0"/>
-                </Grid>
+                <StackPanel>
+                    <TextBlock Text="Простой" Style="{StaticResource CaptionText}" Margin="0,0,0,8"/>
+                    <Border Background="{StaticResource WarnBrush}" CornerRadius="2" Height="3" Margin="0,0,0,10"/>
+                    <TextBlock Text="{Binding IdleTime}" Style="{StaticResource MetricValue}"/>
+                </StackPanel>
             </Border>
 
             <Border Grid.Column="4" Style="{StaticResource CardBorder}" Margin="0">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="8"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-                    <TextBlock Grid.Row="0" Text="Переключений" Style="{StaticResource CaptionText}"/>
-                    <Border Grid.Row="2" Background="{StaticResource AccentBrush}" CornerRadius="2" Height="3" HorizontalAlignment="Left" Width="40"/>
-                    <TextBlock Grid.Row="2" Text="{Binding SwitchCount}" Style="{StaticResource MetricValue}" Margin="0,8,0,0"/>
-                </Grid>
+                <StackPanel>
+                    <TextBlock Text="Переключений" Style="{StaticResource CaptionText}" Margin="0,0,0,8"/>
+                    <Border Background="{StaticResource AccentBrush}" CornerRadius="2" Height="3" Margin="0,0,0,10"/>
+                    <TextBlock Text="{Binding SwitchCount}" Style="{StaticResource MetricValue}"/>
+                </StackPanel>
             </Border>
         </Grid>
 
