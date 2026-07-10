@@ -98,7 +98,7 @@ public partial class App : System.Windows.Application
     {
         try
         {
-            using var updateService = new UpdateService(AppLog);
+            var updateService = new UpdateService(AppLog);
             var release = await updateService.CheckForUpdateAsync();
 
             if (release != null)
@@ -110,6 +110,10 @@ public partial class App : System.Windows.Application
                     window.Owner = MainWindow;
                     window.Show();
                 });
+            }
+            else
+            {
+                updateService.Dispose();
             }
         }
         catch (Exception ex)

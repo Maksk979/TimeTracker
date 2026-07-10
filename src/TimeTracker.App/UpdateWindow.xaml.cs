@@ -77,6 +77,11 @@ public partial class UpdateViewModel : ObservableObject
             IsDownloading = false;
         }
     }
+
+    public void DisposeService()
+    {
+        _updateService.Dispose();
+    }
 }
 
 /// <summary>
@@ -84,9 +89,18 @@ public partial class UpdateViewModel : ObservableObject
 /// </summary>
 public partial class UpdateWindow : Window
 {
+    private readonly UpdateViewModel _viewModel;
+
     public UpdateWindow(UpdateViewModel viewModel)
     {
         InitializeComponent();
         DataContext = viewModel;
+        _viewModel = viewModel;
+    }
+
+    protected override void OnClosed(EventArgs e)
+    {
+        _viewModel.DisposeService();
+        base.OnClosed(e);
     }
 }
