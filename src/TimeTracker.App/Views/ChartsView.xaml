@@ -53,6 +53,7 @@
                     <lvc:CartesianChart Grid.Row="1"
                                         Series="{Binding HourlyBarSeries}"
                                         XAxes="{Binding HourlyXAxes}"
+                                        YAxes="{Binding HourlyYAxes}"
                                         AnimationsSpeed="00:00:0.5"/>
                 </Grid>
             </Border>

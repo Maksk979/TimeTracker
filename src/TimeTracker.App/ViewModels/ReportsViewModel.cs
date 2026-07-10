@@ -14,6 +14,9 @@ public partial class ReportsViewModel : ObservableObject
     private readonly ActivityRepository _repository;
     private readonly ILogger _log;
 
+    private static readonly SKColor InkMutedColor = SKColor.Parse("#A0A4AC");
+    private static readonly SKColor AccentColor = SKColor.Parse("#6C72CB");
+
     [ObservableProperty] private DateTime _dateFrom = DateTime.Today.AddDays(-7);
     [ObservableProperty] private DateTime _dateTo = DateTime.Today;
     [ObservableProperty] private string _totalActiveTime = "—";
@@ -23,6 +26,7 @@ public partial class ReportsViewModel : ObservableObject
     public ISeries[] CategoryPieSeries { get; set; } = [];
     public ISeries[] DailyBarSeries { get; set; } = [];
     public Axis[] DailyXAxes { get; set; } = [];
+    public Axis[] DailyYAxes { get; set; } = [];
 
     public ReportsViewModel(ActivityRepository repository, ILogger log)
     {
@@ -45,6 +49,8 @@ public partial class ReportsViewModel : ObservableObject
             TotalIdleTime = FormatDuration(idleSeconds);
             TotalSessions = sessions.Count;
 
+            var labelPaint = new SolidColorPaint(InkMutedColor);
+
             CategoryPieSeries = categoryTotals
                 .OrderByDescending(kv => kv.Value)
                 .Select(kv => new PieSeries<long>
@@ -62,7 +68,17 @@ public partial class ReportsViewModel : ObservableObject
                 {
                     Labels = days.Select(d => d.Key.ToString("dd.MM")).ToArray(),
                     LabelsRotation = 45,
-                    TextSize = 10,
+                    LabelsPaint = labelPaint,
+                    SeparatorsPaint = new SolidColorPaint(SKColor.Parse("#2A2D34")),
+                }
+            ];
+
+            DailyYAxes =
+            [
+                new Axis
+                {
+                    LabelsPaint = labelPaint,
+                    SeparatorsPaint = new SolidColorPaint(SKColor.Parse("#2A2D34")),
                 }
             ];
 
@@ -71,14 +87,14 @@ public partial class ReportsViewModel : ObservableObject
                 new ColumnSeries<long>
                 {
                     Values = days.Select(d => d.Value).ToArray(),
-                    Fill = new SolidColorPaint(SKColors.MediumPurple),
-                    MaxBarWidth = 24,
+                    Fill = new SolidColorPaint(AccentColor),
                 }
             ];
 
             OnPropertyChanged(nameof(CategoryPieSeries));
             OnPropertyChanged(nameof(DailyBarSeries));
             OnPropertyChanged(nameof(DailyXAxes));
+            OnPropertyChanged(nameof(DailyYAxes));
         }
         catch (Exception ex)
         {

@@ -4,20 +4,20 @@
              xmlns:local="clr-namespace:TimeTracker.App">
     <Application.Resources>
         <!-- Linear Dark Theme Tokens -->
-        <Color x:Key="SurfaceColor">#08090A</Color>
-        <Color x:Key="Surface1Color">#1B1C1F</Color>
-        <Color x:Key="Surface2Color">#26272B</Color>
-        <Color x:Key="Surface3Color">#2F3034</Color>
-        <Color x:Key="InkColor">#F7F8F8</Color>
-        <Color x:Key="InkMutedColor">#8A8F98</Color>
-        <Color x:Key="InkSubtleColor">#62666D</Color>
-        <Color x:Key="HairlineColor">#1F2024</Color>
-        <Color x:Key="HairlineStrongColor">#2C2D31</Color>
-        <Color x:Key="AccentColor">#5E6AD2</Color>
-        <Color x:Key="AccentStrongColor">#7176E0</Color>
-        <Color x:Key="GoodColor">#4CB782</Color>
-        <Color x:Key="WarnColor">#E2B203</Color>
-        <Color x:Key="BadColor">#EB5757</Color>
+        <Color x:Key="SurfaceColor">#0C0D0F</Color>
+        <Color x:Key="Surface1Color">#16181C</Color>
+        <Color x:Key="Surface2Color">#1E2025</Color>
+        <Color x:Key="Surface3Color">#282A30</Color>
+        <Color x:Key="InkColor">#F0F0F2</Color>
+        <Color x:Key="InkMutedColor">#A0A4AC</Color>
+        <Color x:Key="InkSubtleColor">#72767E</Color>
+        <Color x:Key="HairlineColor">#2A2D34</Color>
+        <Color x:Key="HairlineStrongColor">#3A3E46</Color>
+        <Color x:Key="AccentColor">#6C72CB</Color>
+        <Color x:Key="AccentStrongColor">#8589DB</Color>
+        <Color x:Key="GoodColor">#5CBF8A</Color>
+        <Color x:Key="WarnColor">#F0C430</Color>
+        <Color x:Key="BadColor">#F06060</Color>
 
         <SolidColorBrush x:Key="SurfaceBrush" Color="{StaticResource SurfaceColor}"/>
         <SolidColorBrush x:Key="Surface1Brush" Color="{StaticResource Surface1Color}"/>

@@ -14,21 +14,37 @@ public partial class ChartsViewModel : ObservableObject
     private readonly ActivityRepository _repository;
     private readonly ILogger _log;
 
+    private static readonly SKColor InkMutedColor = SKColor.Parse("#A0A4AC");
+    private static readonly SKColor AccentColor = SKColor.Parse("#6C72CB");
+
     public ISeries[] CategoryPieSeries { get; set; } = [];
     public ISeries[] HourlyBarSeries { get; set; } = [];
     public Axis[] HourlyXAxes { get; set; } = [];
+    public Axis[] HourlyYAxes { get; set; } = [];
 
     public ChartsViewModel(ActivityRepository repository, ILogger log)
     {
         _repository = repository;
         _log = log;
+
+        var labelPaint = new SolidColorPaint(InkMutedColor);
+
         HourlyXAxes =
         [
             new Axis
             {
-                Labels = Enumerable.Range(0, 24).Select(h => $"{h:00}:00").ToArray(),
-                LabelsRotation = 15,
-                TextSize = 10,
+                Labels = Enumerable.Range(0, 24).Select(h => $"{h:00}").ToArray(),
+                LabelsPaint = labelPaint,
+                SeparatorsPaint = new SolidColorPaint(SKColor.Parse("#2A2D34")),
+            }
+        ];
+
+        HourlyYAxes =
+        [
+            new Axis
+            {
+                LabelsPaint = labelPaint,
+                SeparatorsPaint = new SolidColorPaint(SKColor.Parse("#2A2D34")),
             }
         ];
     }
@@ -56,13 +72,14 @@ public partial class ChartsViewModel : ObservableObject
                 new ColumnSeries<long>
                 {
                     Values = hourlyTotals,
-                    Fill = new SolidColorPaint(SKColors.MediumPurple),
-                    MaxBarWidth = 16,
+                    Fill = new SolidColorPaint(AccentColor),
                 }
             ];
 
             OnPropertyChanged(nameof(CategoryPieSeries));
             OnPropertyChanged(nameof(HourlyBarSeries));
+            OnPropertyChanged(nameof(HourlyXAxes));
+            OnPropertyChanged(nameof(HourlyYAxes));
         }
         catch (Exception ex)
         {
