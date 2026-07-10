@@ -3,13 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:entities="clr-namespace:TimeTracker.Core.Storage.Entities;assembly=TimeTracker.Core"
+             xmlns:helpers="clr-namespace:TimeTracker.App.Helpers"
              mc:Ignorable="d"
              d:DesignHeight="500" d:DesignWidth="860">
-    <UserControl.Resources>
-        <ObjectDataProvider x:Key="FieldTypes" MethodName="GetValues" ObjectType="{x:Type entities:RuleFieldType}"/>
-        <ObjectDataProvider x:Key="MatchTypes" MethodName="GetValues" ObjectType="{x:Type entities:RuleMatchType}"/>
-    </UserControl.Resources>
     <Grid Margin="24">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -83,10 +79,10 @@
                         <DataGrid.Columns>
                             <DataGridComboBoxColumn Header="ПОЛЕ" Width="120"
                                                     SelectedItemBinding="{Binding FieldType}"
-                                                    ItemsSource="{Binding Source={StaticResource FieldTypes}}"/>
+                                                    ItemsSource="{x:Static helpers:EnumHelper.FieldTypes}"/>
                             <DataGridComboBoxColumn Header="ТИП" Width="120"
                                                     SelectedItemBinding="{Binding MatchType}"
-                                                    ItemsSource="{Binding Source={StaticResource MatchTypes}}"/>
+                                                    ItemsSource="{x:Static helpers:EnumHelper.MatchTypes}"/>
                             <DataGridTextColumn Header="ШАБЛОН" Binding="{Binding Pattern, UpdateSourceTrigger=LostFocus}" Width="*"/>
                             <DataGridTextColumn Header="ПРИОР." Binding="{Binding Priority, UpdateSourceTrigger=LostFocus}" Width="70"/>
                             <DataGridCheckBoxColumn Header="ВКЛ" Binding="{Binding IsEnabled}" Width="50"/>
