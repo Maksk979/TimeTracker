@@ -39,6 +39,7 @@
                     <lvc:PieChart Grid.Row="1"
                                   Series="{Binding CategoryPieSeries}"
                                   LegendPosition="Right"
+                                  LegendTextPaint="{Binding LegendTextPaint}"
                                   AnimationsSpeed="00:00:0.5"/>
                 </Grid>
             </Border>
@@ -49,7 +50,7 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    <TextBlock Grid.Row="0" Text="По часам" Style="{StaticResource H2Text}" Margin="0,0,0,12"/>
+                    <TextBlock Grid.Row="0" Text="Активность по часам" Style="{StaticResource H2Text}" Margin="0,0,0,12"/>
                     <lvc:CartesianChart Grid.Row="1"
                                         Series="{Binding HourlyBarSeries}"
                                         XAxes="{Binding HourlyXAxes}"

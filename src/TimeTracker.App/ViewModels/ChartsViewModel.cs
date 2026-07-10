@@ -14,28 +14,39 @@ public partial class ChartsViewModel : ObservableObject
     private readonly ActivityRepository _repository;
     private readonly ILogger _log;
 
+    private static readonly SKColor InkColor = SKColor.Parse("#F0F0F2");
     private static readonly SKColor InkMutedColor = SKColor.Parse("#A0A4AC");
     private static readonly SKColor AccentColor = SKColor.Parse("#6C72CB");
+    private static readonly SKColor HairlineColor = SKColor.Parse("#2A2D34");
 
     public ISeries[] CategoryPieSeries { get; set; } = [];
     public ISeries[] HourlyBarSeries { get; set; } = [];
     public Axis[] HourlyXAxes { get; set; } = [];
     public Axis[] HourlyYAxes { get; set; } = [];
 
+    public SolidColorPaint LegendTextPaint { get; } = new(InkColor);
+    public SolidColorPaint LegendNamePaint { get; } = new(InkMutedColor);
+
     public ChartsViewModel(ActivityRepository repository, ILogger log)
     {
         _repository = repository;
         _log = log;
 
-        var labelPaint = new SolidColorPaint(InkMutedColor);
+        var labelPaint = new SolidColorPaint(InkColor) { FontFamily = "Segoe UI" };
+        var separatorPaint = new SolidColorPaint(HairlineColor);
 
         HourlyXAxes =
         [
             new Axis
             {
-                Labels = Enumerable.Range(0, 24).Select(h => $"{h:00}").ToArray(),
+                Name = "Час дня",
+                NamePaint = new SolidColorPaint(InkMutedColor),
+                Labels = Enumerable.Range(0, 24).Select(h => $"{h:00}:00").ToArray(),
                 LabelsPaint = labelPaint,
-                SeparatorsPaint = new SolidColorPaint(SKColor.Parse("#2A2D34")),
+                LabelsRotation = 30,
+                SeparatorsPaint = separatorPaint,
+                TextSize = 11,
+                NameTextSize = 12,
             }
         ];
 
@@ -43,8 +54,13 @@ public partial class ChartsViewModel : ObservableObject
         [
             new Axis
             {
+                Name = "Секунды",
+                NamePaint = new SolidColorPaint(InkMutedColor),
                 LabelsPaint = labelPaint,
-                SeparatorsPaint = new SolidColorPaint(SKColor.Parse("#2A2D34")),
+                SeparatorsPaint = separatorPaint,
+                TextSize = 11,
+                NameTextSize = 12,
+                Labeler = value => FormatSeconds((long)value),
             }
         ];
     }
@@ -73,6 +89,8 @@ public partial class ChartsViewModel : ObservableObject
                 {
                     Values = hourlyTotals,
                     Fill = new SolidColorPaint(AccentColor),
+                    Name = "Активность",
+                    MaxBarWidth = 20,
                 }
             ];
 
@@ -85,6 +103,12 @@ public partial class ChartsViewModel : ObservableObject
         {
             _log.Error(ex, "Не удалось загрузить данные для графиков");
         }
+    }
+
+    private static string FormatSeconds(long seconds)
+    {
+        var ts = TimeSpan.FromSeconds(seconds);
+        return ts.TotalHours >= 1 ? $"{(int)ts.TotalHours}ч {ts.Minutes}м" : $"{ts.Minutes}м";
     }
 
     private static string GetCategoryColor(string categoryName)
