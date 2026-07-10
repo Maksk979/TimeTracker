@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:TimeTracker.App">
     <Application.Resources>
-        <!-- Linear Dark Theme Tokens -->
+        <!-- Linear Dark Theme Tokens (refined) -->
         <Color x:Key="SurfaceColor">#0C0D0F</Color>
         <Color x:Key="Surface1Color">#16181C</Color>
         <Color x:Key="Surface2Color">#1E2025</Color>
@@ -15,6 +15,7 @@
         <Color x:Key="HairlineStrongColor">#3A3E46</Color>
         <Color x:Key="AccentColor">#6C72CB</Color>
         <Color x:Key="AccentStrongColor">#8589DB</Color>
+        <Color x:Key="AccentSoftColor">#1A1D2E</Color>
         <Color x:Key="GoodColor">#5CBF8A</Color>
         <Color x:Key="WarnColor">#F0C430</Color>
         <Color x:Key="BadColor">#F06060</Color>
@@ -30,6 +31,7 @@
         <SolidColorBrush x:Key="HairlineStrongBrush" Color="{StaticResource HairlineStrongColor}"/>
         <SolidColorBrush x:Key="AccentBrush" Color="{StaticResource AccentColor}"/>
         <SolidColorBrush x:Key="AccentStrongBrush" Color="{StaticResource AccentStrongColor}"/>
+        <SolidColorBrush x:Key="AccentSoftBrush" Color="{StaticResource AccentSoftColor}"/>
         <SolidColorBrush x:Key="GoodBrush" Color="{StaticResource GoodColor}"/>
         <SolidColorBrush x:Key="WarnBrush" Color="{StaticResource WarnColor}"/>
         <SolidColorBrush x:Key="BadBrush" Color="{StaticResource BadColor}"/>
@@ -37,10 +39,10 @@
         <!-- Typography -->
         <FontFamily x:Key="PrimaryFont">Segoe UI, Inter, Arial</FontFamily>
 
-        <!-- Text Styles -->
+        <!-- Text Styles (Emil: tight tracking on display, proper hierarchy) -->
         <Style x:Key="H1Text" TargetType="TextBlock">
             <Setter Property="FontFamily" Value="{StaticResource PrimaryFont}"/>
-            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="FontSize" Value="22"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
             <Setter Property="Foreground" Value="{StaticResource InkBrush}"/>
             <Setter Property="Margin" Value="0,0,0,4"/>
@@ -48,7 +50,7 @@
 
         <Style x:Key="H2Text" TargetType="TextBlock">
             <Setter Property="FontFamily" Value="{StaticResource PrimaryFont}"/>
-            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="FontSize" Value="14"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
             <Setter Property="Foreground" Value="{StaticResource InkBrush}"/>
             <Setter Property="Margin" Value="0,0,0,2"/>
@@ -68,7 +70,7 @@
 
         <Style x:Key="MetricValue" TargetType="TextBlock">
             <Setter Property="FontFamily" Value="{StaticResource PrimaryFont}"/>
-            <Setter Property="FontSize" Value="28"/>
+            <Setter Property="FontSize" Value="32"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
             <Setter Property="Foreground" Value="{StaticResource InkBrush}"/>
         </Style>
@@ -79,17 +81,17 @@
             <Setter Property="Foreground" Value="{StaticResource InkSubtleBrush}"/>
         </Style>
 
-        <!-- Card -->
+        <!-- Card (refined: subtle inner glow on hover) -->
         <Style x:Key="CardBorder" TargetType="Border">
             <Setter Property="Background" Value="{StaticResource Surface1Brush}"/>
             <Setter Property="BorderBrush" Value="{StaticResource HairlineBrush}"/>
             <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="CornerRadius" Value="6"/>
-            <Setter Property="Padding" Value="16"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Padding" Value="20"/>
             <Setter Property="Margin" Value="0,0,0,1"/>
         </Style>
 
-        <!-- Buttons -->
+        <!-- Primary Button (Emil: scale(0.97) on press, 100ms ease-out) -->
         <Style x:Key="PrimaryButton" TargetType="Button">
             <Setter Property="FontFamily" Value="{StaticResource PrimaryFont}"/>
             <Setter Property="FontSize" Value="13"/>
@@ -97,16 +99,19 @@
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="Background" Value="{StaticResource AccentBrush}"/>
             <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Padding" Value="12,6"/>
+            <Setter Property="Padding" Value="14,7"/>
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Border x:Name="border"
                                 Background="{TemplateBinding Background}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="4"
-                                Padding="{TemplateBinding Padding}">
+                                CornerRadius="6"
+                                Padding="{TemplateBinding Padding}"
+                                RenderTransformOrigin="0.5,0.5">
+                            <Border.RenderTransform>
+                                <ScaleTransform x:Name="scale" ScaleX="1" ScaleY="1"/>
+                            </Border.RenderTransform>
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                         <ControlTemplate.Triggers>
@@ -114,7 +119,30 @@
                                 <Setter TargetName="border" Property="Background" Value="{StaticResource AccentStrongBrush}"/>
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="border" Property="Opacity" Value="0.8"/>
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="scale"
+                                                             Storyboard.TargetProperty="ScaleX"
+                                                             To="0.97" Duration="0:0:0.1"/>
+                                            <DoubleAnimation Storyboard.TargetName="scale"
+                                                             Storyboard.TargetProperty="ScaleY"
+                                                             To="0.97" Duration="0:0:0.1"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="scale"
+                                                             Storyboard.TargetProperty="ScaleX"
+                                                             To="1" Duration="0:0:0.15"/>
+                                            <DoubleAnimation Storyboard.TargetName="scale"
+                                                             Storyboard.TargetProperty="ScaleY"
+                                                             To="1" Duration="0:0:0.15"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
                             </Trigger>
                             <Trigger Property="IsEnabled" Value="False">
                                 <Setter TargetName="border" Property="Opacity" Value="0.4"/>
@@ -125,6 +153,7 @@
             </Setter>
         </Style>
 
+        <!-- Secondary Button (Emil: scale(0.97) on press) -->
         <Style x:Key="SecondaryButton" TargetType="Button">
             <Setter Property="FontFamily" Value="{StaticResource PrimaryFont}"/>
             <Setter Property="FontSize" Value="13"/>
@@ -133,7 +162,7 @@
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="BorderBrush" Value="{StaticResource HairlineStrongBrush}"/>
             <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Padding" Value="12,6"/>
+            <Setter Property="Padding" Value="14,7"/>
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Template">
                 <Setter.Value>
@@ -141,9 +170,12 @@
                         <Border x:Name="border"
                                 Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="4"
-                                Padding="{TemplateBinding Padding}">
+                                CornerRadius="6"
+                                Padding="{TemplateBinding Padding}"
+                                RenderTransformOrigin="0.5,0.5">
+                            <Border.RenderTransform>
+                                <ScaleTransform x:Name="scale" ScaleX="1" ScaleY="1"/>
+                            </Border.RenderTransform>
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                         <ControlTemplate.Triggers>
@@ -152,7 +184,30 @@
                                 <Setter Property="Foreground" Value="{StaticResource InkBrush}"/>
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="border" Property="Opacity" Value="0.8"/>
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="scale"
+                                                             Storyboard.TargetProperty="ScaleX"
+                                                             To="0.97" Duration="0:0:0.1"/>
+                                            <DoubleAnimation Storyboard.TargetName="scale"
+                                                             Storyboard.TargetProperty="ScaleY"
+                                                             To="0.97" Duration="0:0:0.1"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="scale"
+                                                             Storyboard.TargetProperty="ScaleX"
+                                                             To="1" Duration="0:0:0.15"/>
+                                            <DoubleAnimation Storyboard.TargetName="scale"
+                                                             Storyboard.TargetProperty="ScaleY"
+                                                             To="1" Duration="0:0:0.15"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -168,7 +223,7 @@
             <Setter Property="Background" Value="{StaticResource Surface2Brush}"/>
             <Setter Property="BorderBrush" Value="{StaticResource HairlineStrongBrush}"/>
             <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Padding" Value="8,6"/>
+            <Setter Property="Padding" Value="10,7"/>
             <Setter Property="CaretBrush" Value="{StaticResource InkBrush}"/>
         </Style>
 
@@ -190,9 +245,10 @@
         <Style x:Key="DarkTabItem" TargetType="TabItem">
             <Setter Property="FontFamily" Value="{StaticResource PrimaryFont}"/>
             <Setter Property="FontSize" Value="13"/>
-            <Setter Property="Foreground" Value="{StaticResource InkMutedBrush}"/>
+            <Setter Property="FontWeight" Value="Medium"/>
+            <Setter Property="Foreground" Value="{StaticResource InkSubtleBrush}"/>
             <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="Padding" Value="12,8"/>
+            <Setter Property="Padding" Value="16,10"/>
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Template">
                 <Setter.Value>
@@ -201,12 +257,14 @@
                                 Background="{TemplateBinding Background}"
                                 Padding="{TemplateBinding Padding}"
                                 BorderThickness="0,0,0,2"
-                                BorderBrush="Transparent">
+                                BorderBrush="Transparent"
+                                CornerRadius="0">
                             <ContentPresenter ContentSource="Header" HorizontalAlignment="Center"/>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource HairlineStrongBrush}"/>
+                                <Setter Property="Foreground" Value="{StaticResource InkMutedBrush}"/>
                             </Trigger>
                             <Trigger Property="IsSelected" Value="True">
                                 <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource AccentBrush}"/>
@@ -245,12 +303,12 @@
             <Setter Property="Background" Value="{StaticResource Surface2Brush}"/>
             <Setter Property="BorderBrush" Value="{StaticResource HairlineBrush}"/>
             <Setter Property="BorderThickness" Value="0,0,0,1"/>
-            <Setter Property="Padding" Value="8,6"/>
+            <Setter Property="Padding" Value="10,7"/>
         </Style>
 
         <Style TargetType="DataGridCell">
             <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Padding" Value="8,4"/>
+            <Setter Property="Padding" Value="10,5"/>
             <Setter Property="Foreground" Value="{StaticResource InkMutedBrush}"/>
         </Style>
 
@@ -274,14 +332,14 @@
             <Setter Property="FontFamily" Value="{StaticResource PrimaryFont}"/>
             <Setter Property="FontSize" Value="13"/>
             <Setter Property="Foreground" Value="{StaticResource InkMutedBrush}"/>
-            <Setter Property="Padding" Value="8,6"/>
+            <Setter Property="Padding" Value="10,7"/>
             <Setter Property="Margin" Value="0,1"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ListBoxItem">
                         <Border x:Name="border"
                                 Background="Transparent"
-                                CornerRadius="4"
+                                CornerRadius="6"
                                 Padding="{TemplateBinding Padding}">
                             <ContentPresenter/>
                         </Border>
@@ -291,7 +349,7 @@
                                 <Setter Property="Foreground" Value="{StaticResource InkBrush}"/>
                             </Trigger>
                             <Trigger Property="IsSelected" Value="True">
-                                <Setter TargetName="border" Property="Background" Value="{StaticResource Surface3Brush}"/>
+                                <Setter TargetName="border" Property="Background" Value="{StaticResource AccentSoftBrush}"/>
                                 <Setter Property="Foreground" Value="{StaticResource InkBrush}"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
@@ -300,7 +358,7 @@
             </Setter>
         </Style>
 
-        <!-- DatePicker для тёмной темы -->
+        <!-- DatePicker -->
         <Style TargetType="DatePicker">
             <Setter Property="FontFamily" Value="{StaticResource PrimaryFont}"/>
             <Setter Property="FontSize" Value="13"/>
@@ -339,7 +397,7 @@
             <Setter Property="FontSize" Value="13"/>
             <Setter Property="Foreground" Value="{StaticResource InkMutedBrush}"/>
             <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="Padding" Value="8,4"/>
+            <Setter Property="Padding" Value="10,5"/>
         </Style>
     </Application.Resources>
 </Application>
