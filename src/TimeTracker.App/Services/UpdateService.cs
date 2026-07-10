@@ -11,10 +11,19 @@ namespace TimeTracker.App.Services;
 /// </summary>
 public sealed class GitHubRelease
 {
+    [System.Text.Json.Serialization.JsonPropertyName("tag_name")]
     public string TagName { get; set; } = string.Empty;
+
+    [System.Text.Json.Serialization.JsonPropertyName("name")]
     public string Name { get; set; } = string.Empty;
+
+    [System.Text.Json.Serialization.JsonPropertyName("body")]
     public string Body { get; set; } = string.Empty;
+
+    [System.Text.Json.Serialization.JsonPropertyName("published_at")]
     public DateTime PublishedAt { get; set; }
+
+    [System.Text.Json.Serialization.JsonPropertyName("assets")]
     public List<GitHubAsset> Assets { get; set; } = new();
 }
 
@@ -23,8 +32,13 @@ public sealed class GitHubRelease
 /// </summary>
 public sealed class GitHubAsset
 {
+    [System.Text.Json.Serialization.JsonPropertyName("name")]
     public string Name { get; set; } = string.Empty;
+
+    [System.Text.Json.Serialization.JsonPropertyName("browser_download_url")]
     public string BrowserDownloadUrl { get; set; } = string.Empty;
+
+    [System.Text.Json.Serialization.JsonPropertyName("size")]
     public long Size { get; set; }
 }
 
