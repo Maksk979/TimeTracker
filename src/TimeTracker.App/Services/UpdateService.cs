@@ -64,11 +64,14 @@ public sealed class UpdateService : IDisposable
         _http = new HttpClient();
         _http.DefaultRequestHeaders.UserAgent.ParseAdd("TimeTracker-Updater");
 
-        // Версия берётся из сборки
+        // Версия берётся из сборки (только 3 части: Major.Minor.Build)
         var assembly = System.Reflection.Assembly.GetExecutingAssembly();
         var version = assembly.GetName().Version;
         CurrentVersion = version ?? new Version(1, 0, 0);
     }
+
+    /// <summary>Отображаемая версия (3 цифры: v1.0.0).</summary>
+    public string DisplayVersion => $"v{CurrentVersion.Major}.{CurrentVersion.Minor}.{CurrentVersion.Build}";
 
     /// <summary>
     /// Проверяет наличие обновления. Возвращает null если обновлений нет.
@@ -92,7 +95,7 @@ public sealed class UpdateService : IDisposable
             // Сравниваем версии
             var latestVersion = ParseVersion(release.TagName);
             _log.Information("Сравнение версий: текущая={Current}, новая={Latest} (tag={Tag})",
-                CurrentVersion, latestVersion?.ToString() ?? "null", release.TagName);
+                DisplayVersion, latestVersion != null ? $"v{latestVersion.Major}.{latestVersion.Minor}.{latestVersion.Build}" : "null", release.TagName);
 
             if (latestVersion != null && latestVersion > CurrentVersion)
             {
@@ -100,7 +103,7 @@ public sealed class UpdateService : IDisposable
                 return release;
             }
 
-            _log.Information("Обновлений нет. Текущая версия: {Version}", CurrentVersion);
+            _log.Information("Обновлений нет. Текущая версия: {Version}", DisplayVersion);
             return null;
         }
         catch (Exception ex)
