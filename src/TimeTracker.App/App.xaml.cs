@@ -1,9 +1,9 @@
 using System.ComponentModel;
 using System.IO;
 using System.Windows;
-using System.Windows.Media.Imaging;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
+using TimeTracker.App.Helpers;
 using TimeTracker.Core;
 using TimeTracker.Core.Tracking;
 
@@ -85,7 +85,7 @@ public partial class App : System.Windows.Application
     private void SetupTray()
     {
         _notifyIcon = new System.Windows.Forms.NotifyIcon();
-        _notifyIcon.Icon = CreateTrayIcon(System.Drawing.Color.FromArgb(76, 159, 112));
+        _notifyIcon.Icon = AppIconGenerator.CreateIcon(16);
         _notifyIcon.Text = "TimeTracker";
         _notifyIcon.Visible = true;
 
@@ -112,19 +112,19 @@ public partial class App : System.Windows.Application
         if (_notifyIcon != null)
         {
             _notifyIcon.Icon = _isPaused
-                ? CreateTrayIcon(System.Drawing.Color.FromArgb(156, 163, 175))
-                : CreateTrayIcon(System.Drawing.Color.FromArgb(76, 159, 112));
+                ? CreateGrayIcon(16)
+                : AppIconGenerator.CreateIcon(16);
             _notifyIcon.Text = _isPaused ? "TimeTracker — пауза" : "TimeTracker";
         }
     }
 
-    private static System.Drawing.Icon CreateTrayIcon(System.Drawing.Color color, int size = 16)
+    private static System.Drawing.Icon CreateGrayIcon(int size)
     {
         var bmp = new System.Drawing.Bitmap(size, size);
         using var g = System.Drawing.Graphics.FromImage(bmp);
         g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
         g.Clear(System.Drawing.Color.Transparent);
-        using var brush = new System.Drawing.SolidBrush(color);
+        using var brush = new System.Drawing.SolidBrush(System.Drawing.Color.FromArgb(120, 120, 130));
         g.FillEllipse(brush, 1, 1, size - 2, size - 2);
         return System.Drawing.Icon.FromHandle(bmp.GetHicon());
     }

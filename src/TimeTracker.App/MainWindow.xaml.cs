@@ -2,6 +2,7 @@ using System.ComponentModel;
 using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
+using TimeTracker.App.Helpers;
 using TimeTracker.App.ViewModels;
 using TimeTracker.Core.Configuration;
 using TimeTracker.Core.Storage;
@@ -20,6 +21,10 @@ public partial class MainWindow : Window
     public MainWindow(ServiceProvider services, ILogger log)
     {
         InitializeComponent();
+
+        // Устанавливаем кастомную иконку
+        var icon = AppIconGenerator.CreateIcon(256);
+        Icon = AppIconGenerator.ToBitmapSource(icon);
 
         var repository = services.GetRequiredService<ActivityRepository>();
         var contextFactory = services.GetRequiredService<Func<TimeTrackerDbContext>>();
