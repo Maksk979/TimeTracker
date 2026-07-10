@@ -1,9 +1,11 @@
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using TimeTracker.App.Helpers;
+using TimeTracker.App.Services;
 using TimeTracker.Core;
 using TimeTracker.Core.Tracking;
 
@@ -28,6 +30,14 @@ public partial class App : System.Windows.Application
 
     protected override async void OnStartup(StartupEventArgs e)
     {
+        // Обработка режима обновления: копируем новый exe поверх старого
+        var args = Environment.GetCommandLineArgs();
+        if (args.Length >= 3 && args[1] == "--update")
+        {
+            HandleUpdate(args[2]);
+            return;
+        }
+
         if (!SingleInstanceMutex.WaitOne(0, false))
         {
             System.Windows.MessageBox.Show("TimeTracker уже запущен.", "TimeTracker",
@@ -47,6 +57,9 @@ public partial class App : System.Windows.Application
             StartTracking();
             SetupTray();
             ShowMainWindow();
+
+            // Проверка обновлений в фоне
+            _ = CheckForUpdatesAsync();
         }
         catch (Exception ex)
         {
@@ -54,6 +67,54 @@ public partial class App : System.Windows.Application
             System.Windows.MessageBox.Show($"Не удалось запустить TimeTracker:\n\n{ex.Message}",
                 "Ошибка запуска", MessageBoxButton.OK, MessageBoxImage.Error);
             Shutdown();
+        }
+    }
+
+    /// <summary>Режим обновления: заменяет старый exe новым и перезапускает.</summary>
+    private void HandleUpdate(string currentExePath)
+    {
+        try
+        {
+            // Ждём пока старое приложение закроется
+            Thread.Sleep(2000);
+
+            var newExe = Environment.ProcessPath;
+            if (newExe != null && File.Exists(newExe) && File.Exists(currentExePath))
+            {
+                File.Copy(newExe, currentExePath, overwrite: true);
+                Process.Start(currentExePath);
+            }
+        }
+        catch
+        {
+            // Тихо обновляем — если не получилось, старое приложение продолжит работу
+        }
+
+        Environment.Exit(0);
+    }
+
+    /// <summary>Проверяет обновления и показывает диалог.</summary>
+    private async Task CheckForUpdatesAsync()
+    {
+        try
+        {
+            using var updateService = new UpdateService(AppLog);
+            var release = await updateService.CheckForUpdateAsync();
+
+            if (release != null)
+            {
+                await Dispatcher.InvokeAsync(() =>
+                {
+                    var viewModel = new UpdateViewModel(updateService, release, AppLog);
+                    var window = new UpdateWindow(viewModel);
+                    window.Owner = MainWindow;
+                    window.Show();
+                });
+            }
+        }
+        catch (Exception ex)
+        {
+            AppLog.Warning(ex, "Ошибка проверки обновлений");
         }
     }
 
