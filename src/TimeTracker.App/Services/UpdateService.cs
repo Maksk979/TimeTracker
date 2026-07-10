@@ -77,6 +77,9 @@ public sealed class UpdateService : IDisposable
 
             // Сравниваем версии
             var latestVersion = ParseVersion(release.TagName);
+            _log.Information("Сравнение версий: текущая={Current}, новая={Latest} (tag={Tag})",
+                CurrentVersion, latestVersion?.ToString() ?? "null", release.TagName);
+
             if (latestVersion != null && latestVersion > CurrentVersion)
             {
                 _log.Information("Доступно обновление: {Version}", release.TagName);
