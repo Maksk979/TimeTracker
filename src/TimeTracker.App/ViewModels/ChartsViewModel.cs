@@ -54,7 +54,7 @@ public partial class ChartsViewModel : ObservableObject
         [
             new Axis
             {
-                Name = "Секунды",
+                Name = "Время активности",
                 NamePaint = new SolidColorPaint(InkMutedColor),
                 LabelsPaint = labelPaint,
                 SeparatorsPaint = separatorPaint,
